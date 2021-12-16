@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactItem.module.scss';
 
-const ContactItem = ({ id, name, phone, onDeleteContact }) => (
+const ContactItem = ({ id, name, phone, onDelete, deleting }) => (
   <li className={s.contactItem}>
     <div>
       <span className={s.contact_name}>{name}</span>
       <span className={s.contact_phone}>{phone}</span>
     </div>
-    <button onClick={() => onDeleteContact(id)} className={s.contact_btn}>
-      X
+    <button onClick={() => onDelete(id)} className={s.contact_btn}>
+      {deleting ? 'O' : 'X'}
     </button>
   </li>
 );
