@@ -1,9 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-// import { setupListeners } from '@reduxjs/toolkit/dist/query';
-
 import { contactsApi } from './contactSlice';
-
 import contactBookReducer from './reducers/contacrBookReducer';
 
 const store = configureStore({

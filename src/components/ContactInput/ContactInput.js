@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import ShortId from 'shortid';
-// import { addContact } from '../../redux/actions/contacts-actions';
-import { addContact } from '../../redux/operations/operations';
+import { useAddContactMutation } from '../../redux/contactSlice';
+import PropTypes from 'prop-types';
 
-function ContactInput() {
+function ContactInput({ data }) {
   const [name, setName] = useState('');
   const [phone, setNumber] = useState('');
 
@@ -14,11 +12,7 @@ function ContactInput() {
 
   const inputContact = { name, phone };
 
-  const stateContacts = useSelector(state => state.contactBook.contacts);
-
-  const dispatch = useDispatch();
-
-  const onSubmit = () => dispatch(addContact(inputContact));
+  const [addContact, { isLoading }] = useAddContactMutation();
 
   const reset = () => {
     setName('');
@@ -41,21 +35,17 @@ function ContactInput() {
     }
   };
 
-  const compareContacts = newContact => {
-    if (
-      stateContacts.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase())
-    ) {
+  const checkContactName = newContact => {
+    if (data.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
       alert(`${newContact.name} is already in contacts!`);
       return;
     }
-    onSubmit(newContact);
+    addContact(inputContact);
   };
 
   const handelSubmit = e => {
     e.preventDefault();
-
-    compareContacts(inputContact);
-
+    checkContactName(inputContact);
     reset();
   };
 
@@ -87,9 +77,15 @@ function ContactInput() {
           onChange={handelChange}
         />
       </label>
-      <button type="submit">add contact</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'wait..' : 'add contact'}
+      </button>
     </form>
   );
 }
+
+ContactInput.propTypes = {
+  data: PropTypes.array,
+};
 
 export default ContactInput;

@@ -1,26 +1,16 @@
 import React from 'react';
-// import { useEffect } from 'react';
-// import PropTypes from 'prop-types';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { deleteContact } from '../../redux/actions/contacts-actions';
-// import { deleteContact, getContacts } from '../../redux/operations/operations';
-// import { contactFilter } from '../../redux/PhoneBook-selectors';
 import ContactItem from '../ContactItem';
 import s from './ContactsList.module.scss';
-import { useDeleteContactMutation, useGetContactsQuery } from '../../redux/contactSlice';
-// import { useGetPokemonByNameQuery } from '../../redux/contactSlice';
-// import { useGetContactsByQuery } from '../../redux/contactSlice';
+import { useSelector } from 'react-redux';
+import { getFilter } from '../../redux/PhoneBook-selectors';
+import PropTypes from 'prop-types';
 
-const ContactsList = () => {
-  const { data, isFetching, error } = useGetContactsQuery();
+const ContactsList = ({ data, isFetching }) => {
+  const filterValue = useSelector(getFilter);
+  const normalizedFilter = filterValue.toLowerCase();
 
-  const contacts = data;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-
-  const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
-
-  // const contacts = useSelector(contactFilter);
+  const visibleContacts =
+    data && data.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
 
   return (
     <div>
@@ -28,20 +18,23 @@ const ContactsList = () => {
 
       {data && (
         <ul className={s.contact_list}>
-          {contacts.map(contact => (
+          {visibleContacts.map(contact => (
             <ContactItem
               key={contact.id}
               id={contact.id}
               name={contact.name}
-              number={contact.number}
-              onDelete={deleteContact}
-              deleting={isDeleting}
+              phone={contact.phone}
             />
           ))}
         </ul>
       )}
     </div>
   );
+};
+
+ContactsList.propTypes = {
+  data: PropTypes.array,
+  isFetching: PropTypes.bool,
 };
 
 export default ContactsList;

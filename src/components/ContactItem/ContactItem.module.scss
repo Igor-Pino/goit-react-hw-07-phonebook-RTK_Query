@@ -7,15 +7,28 @@
   border: 1px solid black;
 }
 
-.contact_number {
-  margin-left: 20px;
+.contact_phone {
+  margin-right: 4px;
+  margin-left: auto;
   font-weight: 400;
 }
 
 .contactItem {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 10px;
   padding: 8px;
   border: 1px solid black;
+}
+
+tr {
+  display: flex;
+}
+
+td {
+  width: 180px;
+}
+
+.contact_btn {
+  margin-right: 4px;
+  margin-left: auto;
 }

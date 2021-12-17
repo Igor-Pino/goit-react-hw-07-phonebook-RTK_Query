@@ -1,23 +1,21 @@
+import { useGetContactsQuery } from './redux/contactSlice';
 import ContactInput from './components/ContactInput';
 import ContactsList from './components/ContactsList/ContactsList';
-// import { useSelector } from 'react-redux';
-// import Filter from './components/ContactFilter';
-// import { getLoading } from './redux/PhoneBook-selectors';
+import Filter from './components/ContactFilter';
 import s from './styles/base.module.scss';
 
 function App() {
-  // const loader = useSelector(getLoading);
+  const { data, isFetching, error } = useGetContactsQuery();
 
   return (
     <div className={s.main_container}>
       <h1 className={s.title}>Phonebook</h1>
 
-      <ContactInput />
-      {/* {loader ? <h2>loading...</h2> : <h2 className={s.title}>Contacts</h2>} */}
+      <ContactInput data={data} />
 
-      {/* <Filter /> */}
+      <Filter />
 
-      <ContactsList />
+      {error ? `${error.message}` : <ContactsList data={data} isFetching={isFetching} />}
     </div>
   );
 }
